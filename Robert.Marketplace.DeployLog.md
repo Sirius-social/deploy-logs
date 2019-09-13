@@ -1,0 +1,7 @@
+## 13.09.19  Первичная настройка кластера
+1. Для установки кластера KAFKA остановился на Confluent-Kafka решении, поскольку они дают мощный набор Ansible PlayBooks, сделал форк [https://github.com/Sirius-social/ansible-playbook-kafka](https://github.com/Sirius-social/ansible-playbook-kafka)
+Выбор связан прежде всего с необходимостью проводить сложные настройки SASL_SSL, руками получится много дольше, кроме того  Confluent поставляет мощный инструмент мониторинга ControlCenter и проч приблуды из коробки.  
+2. Скрипты из ```ansible-playbook-kafka``` не работают на Debian10 пришлось откатывать к Debian9
+3. ```ansible``` которая устанавливалась из репы ставит python2.7 изза чего возникли проблемы с ansible task ```synchronize``` в блоках SSL Sync и SSL Generation: пришлось патчить на ```fetch + archive + unarchive + copy```  
+4. Когда попытался поменять ```{{user}} {{group}}}``` в плейбуке ```kafka_install_playbook.yml```, сервисы не стартовали, пришлось вернуть родные значения ```cp-kafka confluent-kafka```
+5. **Проблема из-за которой потерял 2 дня!!!:** Kafka брокеры при синхре через Zookeeper передают свои адреса (advertised listeners), если этот параметр явно не указан, то брокер адрес берет из ```hostname```. Это лечится либо явным указанием ```advertised listeners``` в ```/etc/kafka/server.properties``` либо указанием рабочего ```hostname``` через ```hostnamectl```, либо корректным hostname. Остановился на установке hostname вместо патчинга плейбуков.
