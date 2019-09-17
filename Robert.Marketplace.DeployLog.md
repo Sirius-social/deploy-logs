@@ -2,6 +2,7 @@
 1. Взял за основу плейбуки [postgres](https://github.com/geerlingguy/ansible-role-postgresql/tree/master/tasks "https://github.com/geerlingguy/ansible-role-postgresql/tree/master/tasks"), [patroni](https://github.com/kostiantyn-nemchenko/ansible-role-patroni), роль haproxy накидал сам.
 2. Мастер стартовал без проблем, реплики, запускаемые patroni, не стартовали, как оказалось (после изучения логов, для этого увеличил debugLEvel=DEBUG), реплика пытается переименовать ```data_dir```, например если ```data_dir=/var/lib/patroni```, то реплика пытается переименовать на этапе ```bootstrap``` каталог в ```data_dir=/var/lib/patroni_2019_xx_yy``` поскольку пользователь ```postgres``` не имеет доступа к корневому каталогу, происходила ошибка и реплики висели в состоянии ```uninitialized```. **Решение:** создал корневую ```var/lib/patroni``` с владельцем ```postgres``` а каталог с данными указал  ```var/lib/patroni/data```, после чего реплики стали бутстрапиться.
 3. При создании кластера ```patroni``` лезет в ```Zookeeper``` и создает каталог вида ```<patroni_namespace>/<patroni_scope>```. Если удалять кластер руками (файлы данных и конфигураций) то надо руками и почистить zookeeper. **Решение:** ```zookeeper-shell <zoo-host:port> rmr /<patroni_namespace>``` 
+4. В целях безопасности выдачу состояния haproxy забиндил на ```localhost```, с машины с Nginx проксирование ижет поверх SSH тунеля
 
 
 ## 13.09.19  Первичная настройка кластера
