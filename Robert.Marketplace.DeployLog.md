@@ -1,3 +1,7 @@
+## 23.09.19  Настройка Portainer
+[Инсталляция](https://portainer.readthedocs.io/en/stable/agent.html)
+1. Возникла след. проблема: агенты принимают Portainer только в первый раз. Если его пересоздавать, то надо пересоздавать и агентов. Либо использовать ```AGENT_SECRET``` 
+
 ## 17.09.19  Настройка Postgres Cluster: Patroni + HAProxy
 1. Взял за основу плейбуки [postgres](https://github.com/geerlingguy/ansible-role-postgresql/tree/master/tasks "https://github.com/geerlingguy/ansible-role-postgresql/tree/master/tasks"), [patroni](https://github.com/kostiantyn-nemchenko/ansible-role-patroni), роль haproxy накидал сам.
 2. в bootstrap блоке настроек ```patroni``` указан пользователь replicator, но он не создается, хотя пароль для superuser применяется. **Решение:** сделал репликацию через ```superuser```
