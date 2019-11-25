@@ -1,6 +1,6 @@
 ## 25.11.19 Статус Kafka Cluster из зеленого перекрасился в красный.
 3 нода (136.243.8.29) перестала отвечать на connection со стороны 2 других брокеров. На машине CPU utilization доходил до 80%. После перезагрузки ноды CPU упал до 40% (DataDog metrics) и восстановился mount volume **/gluster**. Через 10 мин кластер ожил и **ISR Delta** & **Offline partitions** стали падать и загорелись зеленым. 
-На 136.243.15.162 и 136.243.8.29 ,bkcz d bcnthbrt **patroni** из-за того что порт 5432 был занят оригинальным сервисом **postgresql**.
+На 136.243.15.162 и 136.243.8.29 бился в истерике **patroni** из-за того что порт 5432 был занят оригинальным сервисом **postgresql**.
 
 **Решение**: убить сервис postgres удалив все **/etc/systemd/system/postgres.service** файлы и **links** на них и вызвать команды как указано тут: https://superuser.com/questions/513159/how-to-remove-systemd-services
 
